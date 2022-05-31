@@ -70,7 +70,6 @@ export default class VLCPlayerView extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.uri !== prevProps.uri) {
-      console.log('componentDidUpdate')
       this.changeUrl = true
     }
   }
@@ -280,7 +279,6 @@ export default class VLCPlayerView extends Component {
     // if (this.state.paused) {
     //   this.setState({ paused: false });
     // }
-    console.log('onPlaying')
   }
 
   /**
@@ -293,7 +291,6 @@ export default class VLCPlayerView extends Component {
     // } else {
     //   this.setState({ showControls: true });
     // }
-    console.log('onPaused')
   }
 
   /**
@@ -309,12 +306,9 @@ export default class VLCPlayerView extends Component {
     if (!this.bufferInterval) {
       this.bufferInterval = setInterval(this.bufferIntervalFunction, 250)
     }
-    console.log('onBuffering')
-    console.log(event)
   }
 
   bufferIntervalFunction = () => {
-    console.log('bufferIntervalFunction')
     let currentTime = new Date().getTime()
     let diffTime = currentTime - this.bufferTime
     if (diffTime > 1000) {
@@ -331,7 +325,6 @@ export default class VLCPlayerView extends Component {
         },
       )
       this.bufferInterval = null
-      console.log('remove  bufferIntervalFunction')
     }
   }
 
@@ -340,21 +333,15 @@ export default class VLCPlayerView extends Component {
     let { onVLCError } = this.props
     onVLCError && onVLCError()
     // [bavv add end]
-    console.log('_onError')
-    console.log(e)
     this.reloadSuccess = false
     this.setState({
       isError: true,
     })
   }
 
-  _onOpen = (e) => {
-    console.log('onOpen', e)
-  }
+  _onOpen = (e) => {}
 
   _onLoadStart = (e) => {
-    console.log('_onLoadStart')
-    console.log(e)
     let { isError } = this.state
     if (isError) {
       this.reloadSuccess = true
@@ -406,14 +393,6 @@ export default class VLCPlayerView extends Component {
    * @param event
    */
   onProgress(event) {
-    /* console.log(
-     'position=' +
-     event.position +
-     ',currentTime=' +
-     event.currentTime +
-     ',remainingTime=' +
-     event.remainingTime,
-     );*/
     let currentTime = event.currentTime
     let loadingSuccess = false
     if (currentTime > 0 || this.state.currentTime > 0) {
@@ -439,9 +418,6 @@ export default class VLCPlayerView extends Component {
    * @param event
    */
   onEnded(event) {
-    console.log('onEnded ---------->')
-    console.log(event)
-    console.log('<---------- onEnded ')
     let { currentTime, totalTime } = this.state
     // [bavv add start]
     let { onVLCEnded, onEnd, autoplay, isGG } = this.props
@@ -458,9 +434,7 @@ export default class VLCPlayerView extends Component {
             onEnd && onEnd()
             if (!isGG) {
               this.vlcPlayer.resume && this.vlcPlayer.resume(false)
-              console.log(this.props.uri + ':   onEnded')
             } else {
-              console.log('片头：' + this.props.uri + ':   onEnded')
             }
             this.isEnding = true
           }
